@@ -63,4 +63,22 @@ app.get("/articles", function (req, res) {
 });
 ```
 
+5. POST new article
+
+```node.js
+app.post("/articles", function (req, res) {
+  const newArticle = new Article({
+    title: req.body.title,
+    content: req.body.content,
+  });
+  newArticle.save(function (err) {
+    if (!err) {
+      res.send("Successfully added new article.");
+    } else {
+      res.send(err);
+    }
+  });
+});
+```
+
 ...to be continued.
