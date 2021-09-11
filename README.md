@@ -4,7 +4,6 @@ With this project I learned creating RESTful API.
 Everything below are from app.js, for testing I used [Postman](https://www.postman.com/).
 
 1. Setup of project
-
 ```node.js
 //jshint esversion:6
 
@@ -31,15 +30,11 @@ app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
 ```
-
 2. Connect to database
-
 ```node.js
 mongoose.connect("mongodb://localhost:27017/wikiDB", { useNewUrlParser: true });
 ```
-
 3. Create schema and model
-
 ```node.js
 const articleSchema = {
   title: String,
@@ -48,9 +43,7 @@ const articleSchema = {
 
 const Article = mongoose.model("Article", articleSchema);
 ```
-
 4. GET articles from database
-
 ```node.js
 app.get("/articles", function (req, res) {
   Article.find({}, function (err, foundArticles) {
@@ -62,9 +55,7 @@ app.get("/articles", function (req, res) {
   });
 });
 ```
-
 5. POST a new article
-
 ```node.js
 app.post("/articles", function (req, res) {
   const newArticle = new Article({
@@ -80,9 +71,7 @@ app.post("/articles", function (req, res) {
   });
 });
 ```
-
 6. DELETE all articles
-
 ```node.js
 app.delete("/articles", function (req, res) {
   Article.deleteMany(function (err) {
@@ -95,7 +84,6 @@ app.delete("/articles", function (req, res) {
 });
 ```
 7. Updated GET, POST and DELETE to chainable route handler
-
 ```node.js
 app
   .route("/articles")
@@ -131,5 +119,19 @@ app
     });
   });
 ```
-
+8. GET route for a specific article
+```node.js
+app.route("/articles/:articleTitle").get(function (req, res) {
+  Article.findOne({ title: req.params.articleTitle }, function (
+    err,
+    foundArticle
+  ) {
+    if (!err) {
+      res.send(foundArticle);
+    } else {
+      res.send(err);
+    }
+  });
+});
+```
 ...to be continued.
