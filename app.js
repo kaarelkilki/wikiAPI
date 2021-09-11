@@ -26,6 +26,8 @@ const articleSchema = {
 
 const Article = mongoose.model("Article", articleSchema);
 
+//////////////////////////////////////////// Route for all articles ////////////////////////////////////////////
+
 app
   .route("/articles")
   .get(function (req, res) {
@@ -59,6 +61,21 @@ app
       }
     });
   });
+
+//////////////////////////////////////////// Route for a specific article ////////////////////////////////////////////
+
+app.route("/articles/:articleTitle").get(function (req, res) {
+  Article.findOne({ title: req.params.articleTitle }, function (
+    err,
+    foundArticle
+  ) {
+    if (!err) {
+      res.send(foundArticle);
+    } else {
+      res.send(err);
+    }
+  });
+});
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
