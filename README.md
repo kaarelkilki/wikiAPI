@@ -1,7 +1,7 @@
 # wikiAPI
 With this project I learned creating RESTful API.
 
-Everything below are done in app.js 
+Everything below are from app.js, for testing I used [Postman](https://www.postman.com/).
 
 1. Setup of project
 
@@ -63,7 +63,7 @@ app.get("/articles", function (req, res) {
 });
 ```
 
-5. POST new article
+5. POST a new article
 
 ```node.js
 app.post("/articles", function (req, res) {
@@ -74,6 +74,20 @@ app.post("/articles", function (req, res) {
   newArticle.save(function (err) {
     if (!err) {
       res.send("Successfully added new article.");
+    } else {
+      res.send(err);
+    }
+  });
+});
+```
+
+6. DELETE all articles
+
+```node.js
+app.delete("/articles", function (req, res) {
+  Article.deleteMany(function (err) {
+    if (!err) {
+      res.send("Successfully deleted all the articles.");
     } else {
       res.send(err);
     }
