@@ -64,18 +64,54 @@ app
 
 //////////////////////////////////////////// Route for a specific article ////////////////////////////////////////////
 
-app.route("/articles/:articleTitle").get(function (req, res) {
-  Article.findOne({ title: req.params.articleTitle }, function (
-    err,
-    foundArticle
-  ) {
-    if (!err) {
-      res.send(foundArticle);
-    } else {
-      res.send(err);
-    }
+app
+  .route("/articles/:articleTitle")
+  .get(function (req, res) {
+    Article.findOne({ title: req.params.articleTitle }, function (
+      err,
+      foundArticle
+    ) {
+      if (!err) {
+        res.send(foundArticle);
+      } else {
+        res.send(err);
+      }
+    });
+  })
+  .put(function (req, res) {
+    Article.findOneAndUpdate(
+      { title: req.params.articleTitle },
+      { title: req.body.title, content: req.body.content },
+      { overwrite: true },
+      function (err) {
+        if (!err) {
+          res.send("Successfully updated the entire article.");
+        }
+      }
+    );
+  })
+  .patch(function (req, res) {
+    Article.findOneAndUpdate(
+      { title: req.params.articleTitle },
+      { $set: req.body },
+      function (err) {
+        if (!err) {
+          res.send("Successfully updated the article.");
+        } else {
+          res.send(err);
+        }
+      }
+    );
+  })
+  .delete(function (req, res) {
+    Article.deleteOne({ title: req.params.articleTitle }, function (err) {
+      if (!err) {
+        res.send("Successfully deleted the article.");
+      } else {
+        res.send(err);
+      }
+    });
   });
-});
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
